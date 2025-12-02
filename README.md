@@ -1,4 +1,5 @@
-# ticketplusA console-based Java mini project built using Hibernate ORM, designed to demonstrate real-world workflows like movie management, show scheduling, seat booking, payments, cancellations, and unit testing.
+# ticketplus 
+A console-based Java mini project built using Hibernate ORM, designed to demonstrate real-world workflows like movie management, show scheduling, seat booking, payments, cancellations, and unit testing.
 This project was developed as a fresher-level learning project to understand Hibernate, ORM concepts, and database-driven application design.
 
 📘 Overview
