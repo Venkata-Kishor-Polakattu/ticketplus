@@ -1,0 +1,21 @@
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+        <property name="connection.url">jdbc:mysql://localhost:3306/cts</property>
+        <property name="connection.username">root</property>
+        <property name="connection.password">root@1677</property>
+
+        <!-- Create or update tables automatically-->
+        <property name="hbm2ddl.auto">update</property>
+        <property name="show_sql">true</property>
+        <property name="format_sql">true</property>
+
+
+        <mapping class="com.nk.beans.Movie"/>
+        <mapping class="com.nk.beans.Auditorium"/>
+        <mapping class="com.nk.beans.Show"/>
+    </session-factory>
+</hibernate-configuration>
