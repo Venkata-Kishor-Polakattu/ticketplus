@@ -5,11 +5,13 @@ import com.nk.beans.Movie;
 import com.nk.beans.Show;
 import com.nk.enums.ShowStatus;
 
+import java.util.List;
+
 public class ShowDaoTest {
     private static final ShowDao showDao=new ShowDaoImpl();
 
     public static void main(String[] args) {
-        testAddShow();
+        //testAddShow();
     }
     public static void testAddShow(){
         AuditoriumDao  auditoriumDao=new AuditoriumDaoImpl();

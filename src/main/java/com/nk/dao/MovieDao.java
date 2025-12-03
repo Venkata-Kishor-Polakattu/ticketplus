@@ -2,9 +2,16 @@ package com.nk.dao;
 
 import com.nk.beans.Movie;
 
+import java.util.List;
+
 public interface MovieDao {
-    public void addMovie(Movie movie);
-    public Movie getMovie(Long movieId);
-    public void updateMovie(Long movieId, Movie movie);
-    public void deleteMovie(Long movieId);
+    void addMovie(Movie movie);
+
+    Movie getMovie(Long movieId);
+
+    List<Movie> getAvailableMovies();
+
+    void updateMovie(Long movieId, Movie movie);
+
+    void deleteMovie(Long movieId);
 }

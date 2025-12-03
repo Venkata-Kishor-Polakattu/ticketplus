@@ -5,6 +5,8 @@ import com.nk.config.DBConfig;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import java.util.List;
+
 public class ShowDaoImpl implements ShowDao {
 
     Session session=null;
@@ -25,6 +27,14 @@ public class ShowDaoImpl implements ShowDao {
     public void deleteShow(Long showId) {
 
     }
+
+    @Override
+    public List<Show> getShows() {
+        session= DBConfig.getSession();
+        List<Show> shows=session.createQuery("from Show",Show.class).list();
+        return shows;
+    }
+
 
     @Override
     public void getShow(Long showId) {

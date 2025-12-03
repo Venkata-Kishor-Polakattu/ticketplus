@@ -5,6 +5,8 @@ import com.nk.config.DBConfig;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import java.util.List;
+
 public class AuditoriumDaoImpl implements AuditoriumDao {
 
     Session session;
@@ -39,5 +41,13 @@ public class AuditoriumDaoImpl implements AuditoriumDao {
     @Override
     public void deleteAuditorium(Long audit_Id) {
 
+    }
+
+    @Override
+    public List<Auditorium> getAllAuditorium() {
+        session=DBConfig.getSession();
+        tx=session.beginTransaction();
+        List<Auditorium> auditoriums=session.createQuery("from Auditorium",Auditorium.class).list();
+        return auditoriums;
     }
 }

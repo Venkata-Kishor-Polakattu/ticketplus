@@ -11,7 +11,7 @@ import java.util.Scanner;
 
 public class MovieServiceImpl implements MovieService {
 
-    private static MovieDao movieDao=new MovieDaoImpl();
+    static MovieDao movieDao=new MovieDaoImpl();
 
     @Override
     public void addMovie(MovieDto movieDto) { //here we've to convert MovieDto to Movie
@@ -33,6 +33,7 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public List<Movie> getAllMovies() {
-        return List.of();
+       List<Movie> movies= movieDao.getAvailableMovies();
+       return movies;
     }
 }

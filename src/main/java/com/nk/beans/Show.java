@@ -3,6 +3,8 @@ package com.nk.beans;
 import com.nk.enums.ShowStatus;
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
+
 
 @Entity
 @Table(name = "shows")
@@ -20,7 +22,7 @@ public class Show extends BaseEntity {
     private Auditorium  auditorium;
 
     @Column(name = "showTime")
-    private String showTime;
+    private LocalDate showTime;
 
     @Column(name = "endTime")
     private String endTime;
@@ -60,11 +62,11 @@ public class Show extends BaseEntity {
         this.movie = movie;
     }
 
-    public String getShowTime() {
+    public LocalDate getShowTime() {
         return showTime;
     }
 
-    public void setShowTime(String showTime) {
+    public void setShowTime(LocalDate showTime) {
         this.showTime = showTime;
     }
 

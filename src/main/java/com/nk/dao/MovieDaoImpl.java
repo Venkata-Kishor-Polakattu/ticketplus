@@ -2,8 +2,11 @@ package com.nk.dao;
 
 import com.nk.beans.Movie;
 import com.nk.config.DBConfig;
+import com.nk.enums.MovieStatus;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+
+import java.util.List;
 
 public class MovieDaoImpl implements MovieDao {
     Session session=null;
@@ -31,6 +34,14 @@ public class MovieDaoImpl implements MovieDao {
 
         session.close();
         return foundMovie;
+    }
+
+    @Override
+    public List<Movie> getAvailableMovies() {
+        session=DBConfig.getSession();
+        tx=session.beginTransaction();
+        List<Movie> movies=session.createQuery("from Movie m where m.status='"+ MovieStatus.AVAILABLE+"'",Movie.class).list();
+        return movies;
     }
 
 

@@ -1,13 +1,14 @@
 package com.nk.dao;
 
 import com.nk.beans.Movie;
+import com.nk.enums.Certification;
 import com.nk.enums.MovieStatus;
 
 import java.time.LocalDate;
 
 public class MovieDaoTest {
     public static void main(String[] args) {
-        testAddMovie();//-->success
+        //testAddMovie();//-->success
         //testGetMovie();
         //testUpdateMovie();
     }
@@ -17,7 +18,7 @@ public class MovieDaoTest {
         Movie movie=new Movie();
         movie.setTitle("Spirit");
         movie.setDuration(160);
-        movie.setCertification("A");
+        movie.setCertification(Certification.A);
         movie.setLanguage("Telugu");
         movie.setStatus(MovieStatus.AVAILABLE);
         try {
@@ -43,7 +44,7 @@ public class MovieDaoTest {
         movie.setId(1l);
         movie.setTitle("Salaar");
         movie.setDuration(170);
-        movie.setCertification("A");
+        movie.setCertification(Certification.A);
         movie.setLanguage("Kannada");
         movie.setStatus(MovieStatus.NOT_AVAILABLE);
         try {
