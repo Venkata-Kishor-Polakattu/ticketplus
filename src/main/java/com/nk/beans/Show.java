@@ -4,6 +4,7 @@ import com.nk.enums.ShowStatus;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 
 @Entity
@@ -22,10 +23,10 @@ public class Show extends BaseEntity {
     private Auditorium  auditorium;
 
     @Column(name = "showTime")
-    private LocalDate showTime;
+    private LocalDateTime showTime;
 
     @Column(name = "endTime")
-    private String endTime;
+    private LocalDateTime endTime;
 
     @Enumerated(EnumType.STRING)
     private ShowStatus status;
@@ -38,11 +39,11 @@ public class Show extends BaseEntity {
         this.auditorium = auditorium;
     }
 
-    public String getEndTime() {
+    public LocalDateTime getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(String endTime) {
+    public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
     }
 
@@ -62,11 +63,11 @@ public class Show extends BaseEntity {
         this.movie = movie;
     }
 
-    public LocalDate getShowTime() {
+    public LocalDateTime getShowTime() {
         return showTime;
     }
 
-    public void setShowTime(LocalDate showTime) {
+    public void setShowTime(LocalDateTime showTime) {
         this.showTime = showTime;
     }
 
@@ -84,8 +85,8 @@ public class Show extends BaseEntity {
                 ", id=" + id +
                 ", movie=" + movie +
                 ", auditorium=" + auditorium +
-                ", showTime='" + showTime + '\'' +
-                ", endTime='" + endTime + '\'' +
+                ", showTime='" + showTime.getHour()+":"+showTime.getMinute() + '\'' +
+                ", endTime='" + endTime.getHour()+":"+endTime.getMinute() + '\'' +
                 ", status=" + status +
                 '}';
     }

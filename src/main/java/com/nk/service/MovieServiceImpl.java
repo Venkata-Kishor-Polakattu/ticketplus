@@ -4,9 +4,9 @@ import com.nk.beans.Movie;
 import com.nk.dao.MovieDao;
 import com.nk.dao.MovieDaoImpl;
 import com.nk.dto.MovieDto;
+import com.nk.enums.MovieStatus;
 
 import java.util.List;
-import java.util.Scanner;
 
 
 public class MovieServiceImpl implements MovieService {
@@ -32,8 +32,8 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public List<Movie> getAllMovies() {
-       List<Movie> movies= movieDao.getAvailableMovies();
+    public List<Movie> getAvailableMovies() {
+       List<Movie> movies= movieDao.getMoviesByStatus(MovieStatus.AVAILABLE);
        return movies;
     }
 }

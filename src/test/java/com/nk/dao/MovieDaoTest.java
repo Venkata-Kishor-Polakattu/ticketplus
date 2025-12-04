@@ -4,8 +4,6 @@ import com.nk.beans.Movie;
 import com.nk.enums.Certification;
 import com.nk.enums.MovieStatus;
 
-import java.time.LocalDate;
-
 public class MovieDaoTest {
     public static void main(String[] args) {
         //testAddMovie();//-->success
@@ -32,7 +30,7 @@ public class MovieDaoTest {
 
     public static void testGetMovie(){
         try {
-            movieDao.getMovie(1l);
+            movieDao.getMovieById(1l);
             System.out.println("GET MOVIE passed the TEST");
         }catch (Exception e){
             System.err.println("GET MOVIE failed the TEST");

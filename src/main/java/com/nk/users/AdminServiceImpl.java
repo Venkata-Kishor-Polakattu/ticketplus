@@ -2,11 +2,8 @@ package com.nk.users;
 
 import com.nk.beans.Auditorium;
 import com.nk.beans.Movie;
-import com.nk.beans.Show;
 import com.nk.dao.AuditoriumDao;
 import com.nk.dao.AuditoriumDaoImpl;
-import com.nk.dao.ShowDao;
-import com.nk.dao.ShowDaoImpl;
 import com.nk.dto.MovieDto;
 import com.nk.dto.ShowDto;
 import com.nk.enums.Certification;
@@ -73,7 +70,7 @@ public class AdminServiceImpl implements AdminService {
         System.out.println("--------------------");
         List<Auditorium> auditoriums=auditoriumDao.getAllAuditorium();//show list of auditoriums
         Set<Long> audit_set=new HashSet<>(); //--> to store the ids to check with user input
-        System.out.println("Audit_Id   Name   seat_capacity");
+        System.out.println("Audit_Id   Name   seat_capacity");//displaying all Auditoriums
         for (Auditorium auditorium:auditoriums){
             System.out.println(auditorium.getAid()+"   "+ auditorium.getName()+"   "+(auditorium.getSeatCols()*auditorium.getSeatRows()));
             audit_set.add(auditorium.getAid());
@@ -81,13 +78,15 @@ public class AdminServiceImpl implements AdminService {
 
         System.out.println("Enter Auditorium Id you want ");// select Audid Id (Scanner)
         Long aid=scanner.nextLong();
-        if (audit_set.contains(aid)){
+        ShowDto showDto=new ShowDto();// Create ShowsDto object
 
+        if (audit_set.contains(aid)){
+            showDto.setAid(aid);
         }else {
             System.out.println("please check the auditorium Id and enter the available one");
         }
 
-        List<Movie> movies=movieService.getAllMovies();
+        List<Movie> movies=movieService.getAvailableMovies();//displaying all movies
         Set<Long> movie_set=new HashSet<>();
         System.out.println("Movie_Id   Name");// Show list of movies
         for (Movie movie:movies){
@@ -98,14 +97,11 @@ public class AdminServiceImpl implements AdminService {
         System.out.println("Enter Movie Id you want ");// select Movie Id;
         Long mid=scanner.nextLong();
         if (movie_set.contains(mid)){
-
+            showDto.setMid(mid);
         }else {
             System.out.println("please check the Movie Id and enter the available one");
         }
 
-        ShowDto showDto=new ShowDto();// Create ShowsDto object
-        showDto.setAid(aid);
-        showDto.setMid(mid);
         ShowService showService=new ShowServiceImpl();
         showService.addShow(aid,mid,showDto);// call addShowO(audiID,movieId,showsDto);
     }

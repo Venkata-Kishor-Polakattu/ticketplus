@@ -5,6 +5,7 @@ import com.nk.config.DBConfig;
 import com.nk.enums.MovieStatus;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 import java.util.List;
 
@@ -25,22 +26,29 @@ public class MovieDaoImpl implements MovieDao {
 
 
     @Override
-    public Movie getMovie(Long movieId) {
-        Movie foundMovie;
+    public Movie getMovieById(Long movieId) {
         System.out.println("Searching movie");
         session=DBConfig.getSession();
 
-        foundMovie=session.find(Movie.class, movieId);
+        //Movie foundMovie=session.find(Movie.class, movieId); --> without HQL
+
+        String HQL="from Movie m where m.id=:id"; // -->with HQL
+        Query<Movie> nativeQuery=session.createQuery(HQL,Movie.class);
+        nativeQuery.setParameter("id",movieId);
+
+        Movie foundMovie=nativeQuery.getSingleResult();
 
         session.close();
         return foundMovie;
     }
 
     @Override
-    public List<Movie> getAvailableMovies() {
+    public List<Movie> getMoviesByStatus(MovieStatus movieStatus) {
         session=DBConfig.getSession();
-        tx=session.beginTransaction();
-        List<Movie> movies=session.createQuery("from Movie m where m.status='"+ MovieStatus.AVAILABLE+"'",Movie.class).list();
+        String HQL="from Movie m where m.status=:status";
+        Query<Movie> nativeQuery=session.createQuery(HQL,Movie.class);
+        nativeQuery.setParameter("status",movieStatus);
+        List<Movie> movies=nativeQuery.getResultList();
         return movies;
     }
 
@@ -50,7 +58,7 @@ public class MovieDaoImpl implements MovieDao {
         System.out.println("Updating movie");
 
 
-        Movie foundMovie=getMovie(movieId);
+        Movie foundMovie= getMovieById(movieId);
 
         if (foundMovie != null) {
             session=DBConfig.getSession();
@@ -72,7 +80,7 @@ public class MovieDaoImpl implements MovieDao {
     public void deleteMovie(Long movieId) {
         System.out.println("Deleting movie");
 
-        Movie foundMovie=getMovie(movieId);
+        Movie foundMovie= getMovieById(movieId);
         if (foundMovie != null) {
             session=DBConfig.getSession();
             tx=session.beginTransaction();

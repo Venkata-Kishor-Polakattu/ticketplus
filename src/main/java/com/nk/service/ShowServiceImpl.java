@@ -7,6 +7,7 @@ import com.nk.dao.*;
 import com.nk.dto.ShowDto;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class ShowServiceImpl implements  ShowService {
     private static final ShowDao showDao=new ShowDaoImpl();
@@ -15,10 +16,12 @@ public class ShowServiceImpl implements  ShowService {
     @Override
     public void addShow(Long aid,Long mid,ShowDto showDto) {
         Auditorium auditorium=auditoriumDao.getAuditorium(aid);
-        Movie movie=movieDao.getMovie(mid);
+        Movie movie=movieDao.getMovieById(mid);
         Show show=new Show();
         show.setAuditorium(auditorium);
         show.setMovie(movie);
-        show.setShowTime(LocalDate.now());
+        show.setShowTime(LocalDateTime.now());
+        show.setEndTime(LocalDateTime.now().plusHours(2).plusMinutes(35));
+        showDao.addShow(show);
     }
 }
