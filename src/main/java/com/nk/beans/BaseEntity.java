@@ -17,9 +17,9 @@ public class BaseEntity {
     @UpdateTimestamp
     private LocalDate updatedAt;
 
-    private Long createdBy;
+    private String createdBy;
 
-    private Long updatedBy;
+    private String updatedBy;
 
     public LocalDate getCreatedAt() {
         return createdAt;
@@ -29,11 +29,11 @@ public class BaseEntity {
         this.createdAt = createdAt;
     }
 
-    public Long getCreatedBy() {
+    public String getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(Long createdBy) {
+    public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
     }
 
@@ -45,11 +45,11 @@ public class BaseEntity {
         this.updatedAt = updatedAt;
     }
 
-    public Long getUpdatedBy() {
+    public String getUpdatedBy() {
         return updatedBy;
     }
 
-    public void setUpdatedBy(Long updatedBy) {
+    public void setUpdatedBy(String updatedBy) {
         this.updatedBy = updatedBy;
     }
 }

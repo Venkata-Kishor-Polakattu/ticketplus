@@ -9,6 +9,7 @@ public class MovieDaoTest {
         //testAddMovie();//-->success
         //testGetMovie();
         //testUpdateMovie();
+        //testGetAvailableMovies(); //-->success
     }
 
     static MovieDao movieDao =new MovieDaoImpl();
@@ -30,10 +31,19 @@ public class MovieDaoTest {
 
     public static void testGetMovie(){
         try {
-            movieDao.getMovieById(1l);
-            System.out.println("GET MOVIE passed the TEST");
+            System.out.println(movieDao.getMovieById(1l));
+            System.out.println("✅ GET MOVIE passed the TEST");
         }catch (Exception e){
-            System.err.println("GET MOVIE failed the TEST");
+            System.err.println("❌ GET MOVIE failed the TEST");
+            e.printStackTrace();
+        }
+    }
+    public static void testGetAvailableMovies(){
+        try {
+            System.out.println(movieDao.getMoviesByStatus(MovieStatus.AVAILABLE));
+            System.out.println("✅ GET Available Movies passed the TEST");
+        }catch (Exception e){
+            System.err.println("❌ GET Available Movies failed the TEST");
             e.printStackTrace();
         }
     }
@@ -47,9 +57,9 @@ public class MovieDaoTest {
         movie.setStatus(MovieStatus.NOT_AVAILABLE);
         try {
             movieDao.updateMovie(movie.getId(),movie);
-            System.out.println("UPDATE MOVIE passed the TEST");
+            System.out.println("✅UPDATE MOVIE passed the TEST");
         }catch (Exception e){
-            System.err.println("UPDATE MOVIE failed the TEST");
+            System.err.println("❌UPDATE MOVIE failed the TEST");
             e.printStackTrace();
         }
     }
@@ -57,7 +67,7 @@ public class MovieDaoTest {
         try {
             movieDao.deleteMovie(56l);
         }catch (Exception e){
-            System.err.println("ADD MOVIE failed the TEST");
+            System.err.println("❌ DELETE MOVIE failed the TEST");
             e.printStackTrace();
         }
     }

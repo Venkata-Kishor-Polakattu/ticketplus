@@ -9,15 +9,23 @@ import java.time.LocalDateTime;
 import java.util.Scanner;
 
 public class AdminServiceTests {
-    private static final Scanner scanner = new Scanner(System.in);
+    private static AdminService adminService = new AdminServiceImpl();
     public static void main(String[] args) {
 
         testGetAvailableMovies();
         //testCreateMovie();
-        /*LocalDateTime localDate=LocalDateTime.now().plusHours(2).plusMinutes(45);
-        System.out.println(localDate.getHour()+":"+localDate.getMinute()+":"+localDate.getSecond());*/
+        //testCreateShow(); //-->success
     }
 
+    private static void testCreateShow() {
+        try {
+            System.out.println("Testing Create Show method");
+            adminService.createShow();
+            System.out.println("✅ Admin Create Movie passed the TEST");
+        } catch (Exception e) {
+            System.out.println("✅❌ Admin Create Movie failed the TEST");
+        }
+    }
     private static void testCreateMovie() {
         try {
             System.out.println("Testing CreateMovie method");

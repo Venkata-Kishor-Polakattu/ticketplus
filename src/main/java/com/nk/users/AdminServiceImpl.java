@@ -8,11 +8,14 @@ import com.nk.dto.MovieDto;
 import com.nk.dto.ShowDto;
 import com.nk.enums.Certification;
 import com.nk.enums.MovieStatus;
+import com.nk.exception.InvalidAuditorium;
+import com.nk.exception.InvalidMovie;
 import com.nk.service.MovieService;
 import com.nk.service.MovieServiceImpl;
 import com.nk.service.ShowService;
 import com.nk.service.ShowServiceImpl;
 
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
@@ -46,10 +49,12 @@ public class AdminServiceImpl implements AdminService {
             Certification certification = Certification.valueOf(scanner.next());
             movieDto.setCertification(certification);
 
-            MovieStatus status = MovieStatus.AVAILABLE;
-            movieDto.setStatus(status);
 
-            movieDto.setCreatedBy(204l);
+            movieDto.setStatus(MovieStatus.AVAILABLE);
+
+            System.out.println("Enter Your name : ");
+            String name=scanner.next();
+            movieDto.setCreatedBy(name);
 
             System.out.println("Check movie Details");
             System.out.println(movieDto);
@@ -69,40 +74,62 @@ public class AdminServiceImpl implements AdminService {
         System.out.println("Enter Show Details");
         System.out.println("--------------------");
         List<Auditorium> auditoriums=auditoriumDao.getAllAuditorium();//show list of auditoriums
-        Set<Long> audit_set=new HashSet<>(); //--> to store the ids to check with user input
+        //Set<Long> audit_set=new HashSet<>(); //--> to store the ids to check with user input
         System.out.println("Audit_Id   Name   seat_capacity");//displaying all Auditoriums
         for (Auditorium auditorium:auditoriums){
             System.out.println(auditorium.getAid()+"   "+ auditorium.getName()+"   "+(auditorium.getSeatCols()*auditorium.getSeatRows()));
-            audit_set.add(auditorium.getAid());
+            //audit_set.add(auditorium.getAid());
         }
 
         System.out.println("Enter Auditorium Id you want ");// select Audid Id (Scanner)
         Long aid=scanner.nextLong();
-        ShowDto showDto=new ShowDto();// Create ShowsDto object
+        /*if (!audit_set.contains(aid)){
+            throw new InvalidAuditorium("Invalid Auditorium Id and enter the available one");
+        }*/
 
-        if (audit_set.contains(aid)){
-            showDto.setAid(aid);
-        }else {
-            System.out.println("please check the auditorium Id and enter the available one");
-        }
 
         List<Movie> movies=movieService.getAvailableMovies();//displaying all movies
-        Set<Long> movie_set=new HashSet<>();
+        //Set<Long> movie_set=new HashSet<>();
         System.out.println("Movie_Id   Name");// Show list of movies
         for (Movie movie:movies){
             System.out.println(movie.getId()+"     "+movie.getTitle());
-            movie_set.add(movie.getId());
+            //movie_set.add(movie.getId());
         }
 
         System.out.println("Enter Movie Id you want ");// select Movie Id;
         Long mid=scanner.nextLong();
-        if (movie_set.contains(mid)){
-            showDto.setMid(mid);
-        }else {
-            System.out.println("please check the Movie Id and enter the available one");
-        }
+        /*if (!movie_set.contains(mid)){
+            throw new InvalidMovie("Invalid Movie Id and enter the available one");
+        }*/
 
         ShowService showService=new ShowServiceImpl();
+        ShowDto showDto=new ShowDto();
         showService.addShow(aid,mid,showDto);// call addShowO(audiID,movieId,showsDto);
+    }
+
+    @Override
+    public void createAuditorium() {
+        Auditorium auditorium=new Auditorium();
+        System.out.println("Enter Auditorium Details");
+        System.out.println("--------------------");
+
+        System.out.println("Enter Auditorium Name you want ");
+        String name=scanner.next();
+        auditorium.setName(name); //auditorium.setName("Ranga");
+
+        System.out.println("Enter Seat Columns ");
+        Integer seatCols=scanner.nextInt();
+        auditorium.setSeatCols(seatCols);//auditorium.setSeatCols(20);
+
+        System.out.println("Enter Seat Rows ");
+        Integer seatRows=scanner.nextInt();
+        auditorium.setSeatRows(seatRows);//auditorium.setSeatRows(25);
+
+        auditorium.setCreatedAt(LocalDate.now());
+        auditorium.setUpdatedAt(LocalDate.now());
+        auditorium.setCreatedBy("Sharath");
+
+        AuditoriumDao auditoriumDao=new AuditoriumDaoImpl();
+        auditoriumDao.addAuditorium(auditorium);
     }
 }

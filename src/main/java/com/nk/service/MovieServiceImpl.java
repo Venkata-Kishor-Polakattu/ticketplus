@@ -23,6 +23,7 @@ public class MovieServiceImpl implements MovieService {
         movie.setDuration(movieDto.getDuration());
         movie.setStatus(movieDto.getStatus());
         movie.setCreatedBy(movieDto.getCreatedBy());
+        movie.setCreatedBy(movieDto.getCreatedBy());
         movieDao.addMovie(movie);
     }
 

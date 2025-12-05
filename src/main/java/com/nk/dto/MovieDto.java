@@ -9,7 +9,7 @@ public class MovieDto { //title, language, duration, certification, status, crea
     private Integer duration;
     private Certification certification;
     private MovieStatus status;
-    private Long createdBy;
+    private String createdBy;
 
     public Certification getCertification() {
         return certification;
@@ -19,11 +19,11 @@ public class MovieDto { //title, language, duration, certification, status, crea
         this.certification = certification;
     }
 
-    public Long getCreatedBy() {
+    public String getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(Long createdBy) {
+    public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
     }
 

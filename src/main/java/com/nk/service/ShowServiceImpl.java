@@ -21,7 +21,7 @@ public class ShowServiceImpl implements  ShowService {
         show.setAuditorium(auditorium);
         show.setMovie(movie);
         show.setShowTime(LocalDateTime.now());
-        show.setEndTime(LocalDateTime.now().plusHours(2).plusMinutes(35));
+        show.setEndTime(LocalDateTime.now().plusHours(movie.getDuration()/60).plusMinutes(movie.getDuration()%60));
         showDao.addShow(show);
     }
 }

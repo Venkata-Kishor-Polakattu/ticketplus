@@ -15,9 +15,8 @@ public class AuditoriumDaoImpl implements AuditoriumDao {
     @Override
     public void addAuditorium(Auditorium auditorium) {
         System.out.println("adding auditorium");
-
-        session= DBConfig.getSession();
-        tx=session.beginTransaction();
+        session = DBConfig.getSession();
+        tx = session.beginTransaction();
 
         session.persist(auditorium);
         tx.commit();
@@ -29,7 +28,10 @@ public class AuditoriumDaoImpl implements AuditoriumDao {
     public Auditorium getAuditorium(Long audit_Id) {
         System.out.println("Searching auditorium");
         session= DBConfig.getSession();
+        tx=session.beginTransaction();
         Auditorium auditorium=session.find(Auditorium.class, audit_Id);
+        tx.commit();
+        session.close();
         return auditorium;
     }
 
