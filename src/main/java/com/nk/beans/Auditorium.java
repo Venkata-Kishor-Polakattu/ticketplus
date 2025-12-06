@@ -1,5 +1,6 @@
 package com.nk.beans;
 
+import com.nk.enums.SeatStatus;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -23,6 +24,31 @@ public class Auditorium extends BaseEntity{ //id, name, seatRows, seatCols
 
     @OneToMany(mappedBy="auditorium",cascade = CascadeType.ALL)
     private List<Show>  shows=new ArrayList<>();
+
+    @OneToMany(mappedBy = "auditorium",cascade = CascadeType.ALL)
+    private List<Seat> seats=new ArrayList<>();
+
+    public void generateSeats(){
+        char row='A';
+        for (int j=1;j<=seatRows;j++){
+            for (int i=1;i<=seatCols;i++){
+                Seat seat=new Seat();
+                seat.setSeatNo(""+row+i);
+                seat.setAuditorium(this);
+                seat.setStatus(SeatStatus.AVAILABLE);
+                seats.add(seat);
+            }
+            row++;
+        }
+    }
+
+    public List<Seat> getSeats() {
+        return seats;
+    }
+
+    public void setSeats(List<Seat> seats) {
+        this.seats = seats;
+    }
 
     public Long getAid() {
         return aid;

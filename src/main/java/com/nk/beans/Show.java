@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 public class Show extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "movie_id")
@@ -47,11 +47,11 @@ public class Show extends BaseEntity {
         this.endTime = endTime;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
