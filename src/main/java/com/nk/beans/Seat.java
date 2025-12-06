@@ -3,6 +3,8 @@ package com.nk.beans;
 import com.nk.enums.SeatStatus;
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "seats")
 public class Seat {
@@ -17,8 +19,12 @@ public class Seat {
     private SeatStatus status;
 
     @ManyToOne()
-    @JoinColumn(name = "audit-id")
+    @JoinColumn(name = "audit_id")
     private Auditorium auditorium;
+
+    /*@OneToMany(mappedBy = "seat")
+    private List<Booking> bookings;*/
+
 
     public Long getId() {
         return id;
@@ -50,5 +56,15 @@ public class Seat {
 
     public void setSeatNo(String seatNo) {
         this.seatNo = seatNo;
+    }
+
+    @Override
+    public String toString() {
+        return "Seat{" +
+                "auditorium=" + auditorium.getName() +
+                ", id=" + id +
+                ", seatNo='" + seatNo + '\'' +
+                ", status=" + status +
+                '}';
     }
 }

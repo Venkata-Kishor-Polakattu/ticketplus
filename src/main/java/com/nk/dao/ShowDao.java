@@ -1,17 +1,18 @@
 package com.nk.dao;
 
 import com.nk.beans.Show;
-import com.nk.dto.ShowDto;
+import com.nk.enums.ShowStatus;
+import org.hibernate.Session;
 
 import java.util.List;
 
 public interface ShowDao {
-    void getShow(Long showId);
-    void updateShow(Long showId);
+    Show getShowById(Session session, Long showId);
+    void updateShow(Session session,Long showId);
 
-    void addShow(Show show);
+    void addShow(Session session,Show show);
 
-    void deleteShow(Long showId);
-    List<Show> getShows();
+    void deleteShow(Session session,Long showId);
+    List<Show> getShowsByStatus(Session session,ShowStatus showStatus);
 
 }

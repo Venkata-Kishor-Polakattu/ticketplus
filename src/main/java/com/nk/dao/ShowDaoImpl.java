@@ -2,47 +2,49 @@ package com.nk.dao;
 
 import com.nk.beans.Show;
 import com.nk.config.DBConfig;
+import com.nk.enums.ShowStatus;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 import java.util.List;
 
 public class ShowDaoImpl implements ShowDao {
 
-    Session session=null;
-    Transaction tx=null;
 
     @Override
-    public void addShow(Show show) {
+    public void addShow(Session session,Show show) {
         System.out.println("Adding Show");
-        session= DBConfig.getSession();
-        tx=session.beginTransaction();
         session.persist(show);
-        tx.commit();
         System.out.println("Show Added successfully");
-        session.close();
     }
 
     @Override
-    public void deleteShow(Long showId) {
+    public void deleteShow(Session session,Long showId) {
 
     }
 
     @Override
-    public List<Show> getShows() {
-        session= DBConfig.getSession();
-        List<Show> shows=session.createQuery("from Show",Show.class).list();
+    public List<Show> getShowsByStatus(Session session,ShowStatus showStatus) {
+        Query<Show> nativeQuery=session.createQuery("from Show s where s.status=:status",Show.class);
+        nativeQuery.setParameter("status",showStatus);
+
+        List<Show> shows=nativeQuery.getResultList();
         return shows;
     }
 
 
     @Override
-    public void getShow(Long showId) {
+    public Show getShowById(Session session,Long showId) {
+        System.out.println("Getting Show by Show Id");
+        Query<Show> nativeQuery=session.createQuery("select s from Show s join fetch s.movie join fetch s.auditorium where s.id=:id",Show.class);
+        nativeQuery.setParameter("id",showId);
 
+        Show show=nativeQuery.getSingleResult();
+        return show;
     }
 
     @Override
-    public void updateShow(Long showId) {
-
+    public void updateShow(Session session,Long showId) {
     }
 }

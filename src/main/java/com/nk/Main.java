@@ -1,16 +1,21 @@
 package com.nk;
 
-import com.nk.service.*;
+import com.nk.exception.InvalidShowException;
+import com.nk.factory.FactoryClass;
 import com.nk.users.AdminService;
-import com.nk.users.AdminServiceImpl;
+import com.nk.users.CustomerService;
 
 import java.util.Scanner;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
-    private static final AdminService adminService = new AdminServiceImpl();
-    public static void main(String[] args) {
+
+    private static final AdminService adminService = FactoryClass.getAdminService();
+    private static final CustomerService customerService = FactoryClass.getCustomerService();
+
+
+    public static void main(String[] args) throws InvalidShowException {
         final Scanner sc = new Scanner(System.in);
 
         System.out.println("===============WELCOME TO TICKETPLUS===============");
@@ -39,6 +44,31 @@ public class Main {
                     }
                     break;
                 case 2:
+                    System.out.println("CUSTOMER CONSOLE MENU\n" +
+                            "1\uFE0F⃣ View Seats\n" +
+                            "2\uFE0F⃣ Book Tickets\n" +
+                            "3\uFE0F⃣ Confirm Payment\n" +
+                            "4\uFE0F⃣ Cancel Booking\n" +
+                            "5\uFE0F⃣ Exit");
+                    System.out.print("Enter your choice :");
+                    int customerChoice = sc.nextInt();
+                    switch (customerChoice) {
+                        case 1:
+                            customerService.viewSeats();
+                            break;
+                        case 2:
+                            customerService.bookTickets();
+                            break;
+                        case 3:
+                            customerService.confirmPayment();
+                            break;
+                        case 4:
+                            customerService.cancelBooking();
+                            break;
+                        default:
+                            System.exit(0);
+                            break;
+                    }
                     break;
                 default:
                     System.exit(0);

@@ -10,25 +10,18 @@ import org.hibernate.query.Query;
 import java.util.List;
 
 public class MovieDaoImpl implements MovieDao {
-    Session session=null;
-    Transaction tx=null;
 
     @Override
-    public void addMovie(Movie movie) {
+    public void addMovie(Session session,Movie movie) {
         System.out.println("Adding movie");
-
-        session=DBConfig.getSession();
-        tx=session.beginTransaction();
         session.persist(movie);
-        tx.commit();
         session.close();
     }
 
 
     @Override
-    public Movie getMovieById(Long movieId) {
+    public Movie getMovieById(Session session,Long movieId) {
         System.out.println("Searching movie");
-        session=DBConfig.getSession();
 
         //Movie foundMovie=session.find(Movie.class, movieId); --> without HQL
 
@@ -37,56 +30,48 @@ public class MovieDaoImpl implements MovieDao {
         nativeQuery.setParameter("id",movieId);
 
         Movie foundMovie=nativeQuery.getSingleResult();
-
-        session.close();
         return foundMovie;
     }
 
     @Override
-    public List<Movie> getMoviesByStatus(MovieStatus movieStatus) {
-        session=DBConfig.getSession();
+    public List<Movie> getMoviesByStatus(Session session,MovieStatus movieStatus) {
         String HQL="from Movie m where m.status=:status";
         Query<Movie> nativeQuery=session.createQuery(HQL,Movie.class);
         nativeQuery.setParameter("status",movieStatus);
+
+        Transaction tx=session.beginTransaction();
         List<Movie> movies=nativeQuery.getResultList();
+
         return movies;
     }
 
 
     @Override
-    public void updateMovie(Long movieId, Movie movie) {
+    public void updateMovie(Session session,Long movieId, Movie movie) {
         System.out.println("Updating movie");
 
 
-        Movie foundMovie= getMovieById(movieId);
+        Movie foundMovie= getMovieById(session,movieId);
 
         if (foundMovie != null) {
-            session=DBConfig.getSession();
-            tx=session.beginTransaction();
             foundMovie.setTitle(movie.getTitle());
             foundMovie.setLanguage(movie.getLanguage());
             foundMovie.setDuration(movie.getDuration());
             foundMovie.setCertification(movie.getCertification());
             foundMovie.setStatus(movie.getStatus());
             session.persist(foundMovie);
-            tx.commit();
-            session.close();
             System.out.println("Movie updated successfully");
         }else System.out.println("Movie not found");
     }
 
 
     @Override
-    public void deleteMovie(Long movieId) {
+    public void deleteMovie(Session session,Long movieId) {
         System.out.println("Deleting movie");
 
-        Movie foundMovie= getMovieById(movieId);
+        Movie foundMovie= getMovieById(session,movieId);
         if (foundMovie != null) {
-            session=DBConfig.getSession();
-            tx=session.beginTransaction();
             session.remove(foundMovie);
-            tx.commit();
-            session.close();
             System.out.println("Movie deleted successfully");
         }else System.out.println("Movie not found");
     }

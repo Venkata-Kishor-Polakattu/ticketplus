@@ -52,4 +52,14 @@ public class Booking {
     public void setShow(Show show) {
         this.show = show;
     }
+
+    @Override
+    public String toString() {
+        return "Booking{" +
+                "bookingStatus=" + bookingStatus +
+                ", id=" + id +
+                ", show=" + show +
+                ", seat=" + seat +
+                '}';
+    }
 }

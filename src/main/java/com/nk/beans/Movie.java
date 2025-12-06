@@ -29,7 +29,7 @@ public class Movie extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private MovieStatus status;
 
-    @OneToMany(mappedBy = "movie",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "movie",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<Show> showList = new ArrayList<>();
 
     public Long getId() {

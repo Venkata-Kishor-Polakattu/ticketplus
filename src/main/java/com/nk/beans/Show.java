@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 @Entity
@@ -14,16 +15,27 @@ public class Show extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "movie_id")
     private Movie movie;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="audit_id")
     private Auditorium  auditorium;
 
+    @OneToMany(mappedBy = "show",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Booking> booking;
+
     @Column(name = "showTime")
     private LocalDateTime showTime;
+
+    public List<Booking> getBooking() {
+        return booking;
+    }
+
+    public void setBooking(List<Booking> booking) {
+        this.booking = booking;
+    }
 
     @Column(name = "endTime")
     private LocalDateTime endTime;
@@ -83,8 +95,8 @@ public class Show extends BaseEntity {
     public String toString() {
         return "Show{" +
                 ", id=" + id +
-                ", movie=" + movie +
-                ", auditorium=" + auditorium +
+                ", movie=" + movie.getTitle() +
+                ", auditorium=" + auditorium.getName() +
                 ", showTime='" + showTime.getHour()+":"+showTime.getMinute() + '\'' +
                 ", endTime='" + endTime.getHour()+":"+endTime.getMinute() + '\'' +
                 ", status=" + status +

@@ -13,10 +13,8 @@ public class DBConfig {
         System.out.println("Configuration loaded");
     }
 
-    public static Session getSession(){
-       Session session= sessionFactory.openSession();
-        System.out.println("Session opened");
-        return session;
+    public static Session getSession() {
+        return sessionFactory.openSession();
     }
 
     public static void shutDownSF(){

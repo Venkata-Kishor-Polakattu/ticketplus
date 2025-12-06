@@ -9,46 +9,33 @@ import java.util.List;
 
 public class AuditoriumDaoImpl implements AuditoriumDao {
 
-    Session session;
-    Transaction tx;
 
     @Override
-    public void addAuditorium(Auditorium auditorium) {
+    public void addAuditorium(Session session,Auditorium auditorium) {
         System.out.println("adding auditorium");
-        session = DBConfig.getSession();
-        tx = session.beginTransaction();
-
+        auditorium.generateSeats();
         session.persist(auditorium);
-        tx.commit();
-        System.out.println("Auditorium added successfully");
-        session.close();
     }
 
     @Override
-    public Auditorium getAuditorium(Long audit_Id) {
+    public Auditorium getAuditorium(Session session,Long audit_Id) {
         System.out.println("Searching auditorium");
-        session= DBConfig.getSession();
-        tx=session.beginTransaction();
         Auditorium auditorium=session.find(Auditorium.class, audit_Id);
-        tx.commit();
-        session.close();
         return auditorium;
     }
 
     @Override
-    public void updateAuditorium(Long audit_Id) {
+    public void updateAuditorium(Session session,Long audit_Id) {
 
     }
 
     @Override
-    public void deleteAuditorium(Long audit_Id) {
+    public void deleteAuditorium(Session session,Long audit_Id) {
 
     }
 
     @Override
-    public List<Auditorium> getAllAuditorium() {
-        session=DBConfig.getSession();
-        tx=session.beginTransaction();
+    public List<Auditorium> getAllAuditorium(Session session) {
         List<Auditorium> auditoriums=session.createQuery("from Auditorium",Auditorium.class).list();
         return auditoriums;
     }
