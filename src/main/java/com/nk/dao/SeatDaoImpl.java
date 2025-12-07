@@ -44,7 +44,7 @@ public class SeatDaoImpl implements  SeatDao {
     }
 
     @Override
-    public Seat getSingleSeatByShowIdAndSeatNo(Session session, Long showId, String seatNo) throws InvalidShowException {
+    public Seat getSingleSeatByShowIdAndSeatNo(Session session, Long showId, String seatNo){
         Show show=session.find(Show.class,showId);
         Query<Seat> nativeQuery=session.createQuery("from Seat s where s.auditorium.id=:audit_id and s.show.id=:show_id and s.seatNo=:seat_no",Seat.class);
         nativeQuery.setParameter("audit_id",show.getAuditorium().getAid());
@@ -54,14 +54,6 @@ public class SeatDaoImpl implements  SeatDao {
         return seat;
     }
 
-    @Override
-    public Seat getSingleSeatByShowId(Session session, Long showId) throws InvalidShowException {
-        Show show=session.find(Show.class,showId);
-        Query<Seat> nativeQuery=session.createQuery("from Seat s where s.auditorium.id=:audit_id and s.show.id=:show_id",Seat.class);
-        nativeQuery.setParameter("audit_id",show.getAuditorium().getAid());
-        nativeQuery.setParameter("show_id",showId);
-        return null;
-    }
 
     @Override
     public void displayAvailableSeatsByShowId(Session session,Long showId) throws InvalidShowException {
@@ -71,5 +63,4 @@ public class SeatDaoImpl implements  SeatDao {
             System.out.print(seat.getSeatNo()+", ");
         }
     }
-
 }

@@ -12,9 +12,8 @@ public interface SeatDao {
 
     List<Seat> getSeatsByShowId(Session session, Long showId) throws InvalidShowException;
 
-    Seat getSingleSeatByShowIdAndSeatNo(Session session, Long showId, String seatNo) throws InvalidShowException;
+    Seat getSingleSeatByShowIdAndSeatNo(Session session, Long showId, String seatNo);
 
-    Seat getSingleSeatByShowId(Session session,Long showId) throws InvalidShowException;
 
     List<Seat> getSeatsByStatus(Session session,SeatStatus status, Long aid);
 

@@ -1,9 +1,11 @@
 package com.nk.dao;
 
 import com.nk.beans.Booking;
+import com.nk.beans.Seat;
 import com.nk.beans.Show;
 import com.nk.enums.BookingStatus;
 import com.nk.enums.PaymentStatus;
+import com.nk.enums.SeatStatus;
 import com.nk.factory.FactoryClass;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
@@ -11,6 +13,7 @@ import org.hibernate.query.Query;
 import java.util.List;
 
 public class BookingDaoImpl implements BookingDao {
+    SeatDao seatDao=FactoryClass.getSeatDao();
 
     @Override
     public Booking generateBooking(Session session,Long showId, String seatNos) throws Exception {
@@ -25,8 +28,15 @@ public class BookingDaoImpl implements BookingDao {
     }
 
     @Override
-    public boolean isSeatBooked(Session session,Long showId, Long seatId) {
-        return false;
+    public void cancelBooking(Session session,Booking booking){
+        String[] seats=booking.getBookedSeats().split(",");
+        Show show=booking.getShow();
+        for (int i=0;i<seats.length;i++) {
+            Seat seat=seatDao.getSingleSeatByShowIdAndSeatNo(session,show.getId(),seats[i]);
+            seat.setStatus(SeatStatus.AVAILABLE);
+            session.merge(seat);
+        }
+        session.remove(booking);
     }
 
     @Override

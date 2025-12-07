@@ -12,22 +12,6 @@ public class BookingDaoTest {
     private static BookingDao bookingDao= FactoryClass.getBookingDao();
     public static void main(String[] args) {
         //testGetBookingsByShow(2l);
-        //testIsSeatBooked();
-    }
-    public static void testIsSeatBooked(Long showId, Long seatId){
-        Session session= DBConfig.getSession();
-        Transaction tx = session.beginTransaction();
-        try {
-            bookingDao.isSeatBooked(session,showId,seatId);
-            System.out.println("✅Get Booking By Show passed the TEST");
-            tx.commit();
-            session.close();
-        }catch (Exception e){
-            tx.rollback();
-            session.close();
-            System.err.println("❌Get Booking By Show failed the TEST");
-            e.printStackTrace();
-        }
     }
 
     public static void testGetBookingsByShow(Long showId) {

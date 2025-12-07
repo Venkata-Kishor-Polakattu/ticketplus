@@ -10,9 +10,18 @@ public class CustomerServiceTest {
 
     public static void main(String[] args) {
         //testViewSeats();
-        //testGetShowById(1l);
         //testBookSeats();
         //testConfirmPayment();
+        testCancelBooking();
+    }
+    public static void testCancelBooking(){
+        try {
+            customerService.cancelBooking();
+            System.out.println("✅ Cancel Booking passed the TEST");
+        } catch (Exception e) {
+            System.out.println("❌ Cancel Booking failed the TEST");
+            e.printStackTrace();
+        }
     }
 
     public static void testConfirmPayment(){
@@ -45,14 +54,4 @@ public class CustomerServiceTest {
         }
     }
 
-    public static void testGetShowById(Long showId){
-        try {
-            Session session= DBConfig.getSession();
-            ShowDao showDao= FactoryClass.getShowDao();
-            System.out.println(showDao.getShowById(session,showId));
-            System.out.println("✅ Customer View Seats passed the TEST");
-        } catch (Exception e) {
-            System.out.println("❌ Customer View Seats failed the TEST");
-        }
-    }
 }

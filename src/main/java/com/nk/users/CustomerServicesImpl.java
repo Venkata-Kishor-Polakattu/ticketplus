@@ -80,7 +80,10 @@ public class CustomerServicesImpl implements CustomerService {
         System.out.println("Booking Tickets");
         Session session = DBConfig.getSession();
         Transaction tx = session.beginTransaction();
+        System.out.println();
         try {
+            System.out.println("Booking Tickets ");
+            System.out.println("------------------");
             List<Show> shows = showDao.getShowsByStatus(session, ShowStatus.OPEN);
 
             //list the available shows
@@ -180,7 +183,10 @@ public class CustomerServicesImpl implements CustomerService {
     public void confirmPayment() {
         Session session = DBConfig.getSession();
         Transaction tx = session.beginTransaction();
+        System.out.println();
         try {
+            System.out.println("Confirming Payment");
+            System.out.println("-------------------");
             System.out.print("Enter Booking Id :");
             Integer id=scanner.nextInt();
             scanner.nextLine();
@@ -244,6 +250,50 @@ public class CustomerServicesImpl implements CustomerService {
 
     @Override
     public void cancelBooking() {
+        Session session = DBConfig.getSession();
+        Transaction tx = session.beginTransaction();
+        System.out.println();
+        try {
+            System.out.println("Cancelling Booking");
+            System.out.println("--------------------");
+            System.out.print("Enter Booking Id :");
+            Integer id=scanner.nextInt();
+            scanner.nextLine();
+            Long bookingId=id.longValue();
 
+            while (bookingId<=0){
+                System.out.print("Booking must be greater than 0 enter again :");
+                bookingId=scanner.nextLong();
+                scanner.nextLine();
+            }
+
+            //Get booking details first
+            Booking booking=bookingDao.getBookingById(session,bookingId);
+
+            if (booking == null) {
+                System.out.println("❌ Invalid Booking Id, please try again.");
+                return;
+            }
+
+            if (!booking.getBookingStatus().equals(BookingStatus.BOOKED)) {
+                System.out.println("Payment was not done yet, you can leave");
+                bookingDao.cancelBooking(session,booking);
+                return;
+            }
+
+            bookingDao.cancelBooking(session,booking);
+            tx.commit();
+            System.out.println("Booking cancelled successfully, your amount will be credited to your account within 24 hours");
+        }catch (Exception e) {
+            if (tx != null && tx.getStatus().canRollback()) {
+                tx.rollback();
+            }
+            System.out.println("❌Payment Failed");
+            e.printStackTrace();
+        }finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
     }
 }
