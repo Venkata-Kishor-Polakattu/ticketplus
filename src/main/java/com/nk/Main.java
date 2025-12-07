@@ -51,7 +51,7 @@ public class Main {
                     }
                     break;
                 case 2:
-                    System.out.println("CUSTOMER CONSOLE MENU\n" +
+                    System.out.println("CUSTOMER Actions \n" +
                             "1\uFE0F⃣ View Seats\n" +
                             "2\uFE0F⃣ Book Tickets\n" +
                             "3\uFE0F⃣ Confirm Payment\n" +

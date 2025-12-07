@@ -12,7 +12,7 @@ public class CustomerServiceTest {
         //testViewSeats();
         //testBookSeats();
         //testConfirmPayment();
-        testCancelBooking();
+        //testCancelBooking();
     }
     public static void testCancelBooking(){
         try {

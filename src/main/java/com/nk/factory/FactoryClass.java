@@ -43,13 +43,6 @@ public class FactoryClass {
         return bookingService;
     }
 
-    private static PaymentService paymentService;
-    public static PaymentService getPaymentServiceFactory(){
-        if (paymentService==null){
-            paymentService=new PaymentServiceImpl();
-        }
-        return paymentService;
-    }
 
     private static ShowService showService;
     public static ShowService getShowServiceFactory(){
@@ -108,11 +101,4 @@ public class FactoryClass {
         return showDao;
     }
 
-    private static PaymentDao paymentDao;
-    public static PaymentDao getPaymentDao() {
-        if (paymentDao == null) {
-            paymentDao=new PaymentDaoImpl();
-        }
-        return paymentDao;
-    }
 }
