@@ -19,8 +19,6 @@ public class CustomerServicesImpl implements CustomerService {
 
     private final Scanner scanner = FactoryClass.getScanner();
     private final ShowDao showDao = FactoryClass.getShowDao();
-    private final MovieDao movieDao= FactoryClass.getMovieDao();
-    private final AuditoriumDao  auditoriumDao = FactoryClass.getAuditoriumDao();
     private final SeatDao seatDao = FactoryClass.getSeatDao();
     private final BookingDao bookingDao = FactoryClass.getBookingDao();
 
@@ -66,7 +64,7 @@ public class CustomerServicesImpl implements CustomerService {
                 tx.rollback();
             }
             System.out.println("❌Tickets Booked Failed");
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }finally {
             if (session != null && session.isOpen()) {
                 session.close();
@@ -119,7 +117,7 @@ public class CustomerServicesImpl implements CustomerService {
             }
 
 
-            System.out.print("\nHow many seats do you want to book? ");
+            System.out.print("How many seats do you want to book? :");
             int count = scanner.nextInt();
             scanner.nextLine();
 
@@ -170,7 +168,7 @@ public class CustomerServicesImpl implements CustomerService {
                 tx.rollback();
             }
             System.out.println("❌Tickets Booked Failed");
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }finally {
             if (session != null && session.isOpen()) {
                 session.close();
@@ -239,7 +237,7 @@ public class CustomerServicesImpl implements CustomerService {
                 tx.rollback();
             }
             System.out.println("❌Payment Failed");
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }finally {
             if (session != null && session.isOpen()) {
                 session.close();
@@ -287,8 +285,8 @@ public class CustomerServicesImpl implements CustomerService {
             if (tx != null && tx.getStatus().canRollback()) {
                 tx.rollback();
             }
-            System.out.println("❌Payment Failed");
-            e.printStackTrace();
+            System.out.println("❌ Cancel Booking Failed");
+            System.out.println(e.getMessage());
         }finally {
             if (session != null && session.isOpen()) {
                 session.close();
