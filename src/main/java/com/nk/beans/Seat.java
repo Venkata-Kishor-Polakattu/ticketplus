@@ -1,6 +1,7 @@
 package com.nk.beans;
 
 import com.nk.enums.SeatStatus;
+import com.nk.enums.ShowStatus;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -22,9 +23,20 @@ public class Seat {
     @JoinColumn(name = "audit_id")
     private Auditorium auditorium;
 
+    @ManyToOne()
+    @JoinColumn(name = "show_id")
+    private Show show;
+
     /*@OneToMany(mappedBy = "seat")
     private List<Booking> bookings;*/
 
+    public Show getShow() {
+        return show;
+    }
+
+    public void setShow(Show show) {
+        this.show = show;
+    }
 
     public Long getId() {
         return id;

@@ -9,8 +9,9 @@ public class CustomerServiceTest {
    private static CustomerService customerService = FactoryClass.getCustomerService();
 
     public static void main(String[] args) {
-        testViewSeats();
+        //testViewSeats();
         //testGetShowById(1l);
+        testBookSeats();
     }
 
     public static void testViewSeats(){
@@ -19,6 +20,16 @@ public class CustomerServiceTest {
             System.out.println("✅ Customer View Seats passed the TEST");
         } catch (Exception e) {
             System.out.println("❌ Customer View Seats failed the TEST");
+            e.printStackTrace();
+        }
+    }
+
+    public static void testBookSeats(){
+        try {
+            customerService.bookTickets();
+            System.out.println("✅ Customer Book Seats passed the TEST");
+        } catch (Exception e) {
+            System.out.println("❌ Customer Book Seats failed the TEST");
             e.printStackTrace();
         }
     }

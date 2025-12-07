@@ -1,5 +1,5 @@
 package com.nk.enums;
 
 public enum SeatStatus {
-    AVAILABLE,BOOKED,LOCKED
+    AVAILABLE,BOOKED
 }

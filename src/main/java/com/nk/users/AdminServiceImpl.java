@@ -15,6 +15,7 @@ import com.nk.service.MovieService;
 import com.nk.service.ShowService;
 import com.nk.service.ShowServiceImpl;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -25,7 +26,8 @@ public class AdminServiceImpl implements AdminService {
     private static final MovieService movieService =FactoryClass.getMovieService();
     @Override
     public void createMovie() {
-        Session session=null;
+        Session session=DBConfig.getSession();
+        Transaction tx=session.beginTransaction();
         try {
             System.out.println("Admin ADD Movie");
             System.out.println("Enter Movie Details");
@@ -58,31 +60,35 @@ public class AdminServiceImpl implements AdminService {
             System.out.println("Check movie Details");
             System.out.println(movieDto);
 
-            session=DBConfig.getSession();
             movieService.addMovie(session,movieDto);
+            tx.commit();
             System.out.println("✅ Movie Added Successfully");
             session.close();
         }catch (Exception e){
-            assert session != null;
-            session.close();
-            System.out.println("❌ Movie Creation Failed");
+            if (tx != null && tx.getStatus().canRollback()) {
+                tx.rollback();
+            }
+            System.out.println("❌Movie Creation Failed");
             e.printStackTrace();
+        }finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
         }
     }
 
     AuditoriumDao auditoriumDao= FactoryClass.getAuditoriumDao();
     @Override
     public void createShow() {
-        Session session=null;
+        Session session=DBConfig.getSession();
+        Transaction tx=session.beginTransaction();
         try {
-            System.out.println("Admin Create show");
-            System.out.println("Enter Show Details");
-            System.out.println("--------------------");
-
-            session= DBConfig.getSession();
+            System.out.println("Admin show creating");
             List<Auditorium> auditoriums = auditoriumDao.getAllAuditorium(session);//show list of auditoriums
             Set<Long> audit_set = new HashSet<>(); //--> to store the ids to check with user input
 
+            System.out.println("Enter Show Details");
+            System.out.println("--------------------");
             System.out.println("Audit_Id  Name   seat_capacity");//displaying all Auditoriums
             for (Auditorium auditorium : auditoriums) {
                 System.out.println(auditorium.getAid() + "          " + auditorium.getName() + "             " + (auditorium.getSeatCols() * auditorium.getSeatRows()));
@@ -95,7 +101,6 @@ public class AdminServiceImpl implements AdminService {
             if (!audit_set.contains(aid)) {
                 throw new InvalidAuditoriumException("Invalid Auditorium Id and enter the available one");
             }
-
 
             List<Movie> movies = movieService.getAvailableMovies(session);//displaying all movies
             Set<Long> movie_set = new HashSet<>();
@@ -120,18 +125,25 @@ public class AdminServiceImpl implements AdminService {
             showDto.setAid(aid);showDto.setMid(mid);showDto.setCreatedBy(name);
             showService.addShow(session,showDto);// call addShowO(audiID,movieId,showsDto);
             System.out.println("✅Show Created Successfully");
+            tx.commit();
             session.close();
         }catch (Exception e){
-            assert session != null;
-            session.close();
+            if (tx != null && tx.getStatus().canRollback()) {
+                tx.rollback();
+            }
             System.out.println("❌Show Creation Failed");
             e.printStackTrace();
+        }finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
         }
     }
 
     @Override
     public void createAuditorium() {
-        Session session=null;
+        Session session=DBConfig.getSession();
+        Transaction tx=session.beginTransaction();
         try {
             Auditorium auditorium = new Auditorium();
             System.out.println("Enter Auditorium Details");
@@ -157,15 +169,21 @@ public class AdminServiceImpl implements AdminService {
             auditorium.setCreatedAt(LocalDate.now());
             auditorium.setUpdatedAt(LocalDate.now());
 
-            session= DBConfig.getSession();
+
             auditoriumDao.addAuditorium(session,auditorium);
+            tx.commit();
             System.out.println("✅Auditorium Added Successfully");
             session.close();
         } catch (Exception e) {
-            assert session != null;
-            session.close();
-            System.out.println("❌Auditorium Creation Failed");
+            if (tx != null && tx.getStatus().canRollback()) {
+                tx.rollback();
+            }
+            System.out.println("❌Show Creation Failed");
             e.printStackTrace();
+        }finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
         }
     }
 }

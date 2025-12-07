@@ -1,6 +1,7 @@
 package com.nk.beans;
 
 import com.nk.enums.BookingStatus;
+import com.nk.enums.PaymentStatus;
 import jakarta.persistence.*;
 
 @Entity
@@ -14,12 +15,31 @@ public class Booking {
     @JoinColumn(name = "show_id")
     private Show show;
 
-    @ManyToOne
-    @JoinColumn(name = "seat_id")
-    private Seat seat;
 
     @Enumerated(EnumType.STRING)
     private BookingStatus  bookingStatus;
+
+    @Enumerated(EnumType.STRING)
+    private PaymentStatus paymentStatus;
+
+    @Column(name = "booked_seats", length = 100)
+    private String bookedSeats;
+
+    public String getBookedSeats() {
+        return bookedSeats;
+    }
+
+    public void setBookedSeats(String bookedSeats) {
+        this.bookedSeats = bookedSeats;
+    }
+
+    public PaymentStatus getPaymentStatus() {
+        return paymentStatus;
+    }
+
+    public void setPaymentStatus(PaymentStatus paymentStatus) {
+        this.paymentStatus = paymentStatus;
+    }
 
     public BookingStatus getBookingStatus() {
         return bookingStatus;
@@ -37,13 +57,6 @@ public class Booking {
         this.id = id;
     }
 
-    public Seat getSeat() {
-        return seat;
-    }
-
-    public void setSeat(Seat seat) {
-        this.seat = seat;
-    }
 
     public Show getShow() {
         return show;
@@ -58,8 +71,8 @@ public class Booking {
         return "Booking{" +
                 "bookingStatus=" + bookingStatus +
                 ", id=" + id +
-                ", show=" + show +
-                ", seat=" + seat +
+                ", show=" + show.getId() +
+                ", seats=" + bookedSeats +
                 '}';
     }
 }

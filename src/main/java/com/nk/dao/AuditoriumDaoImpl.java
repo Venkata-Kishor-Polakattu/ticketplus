@@ -1,9 +1,7 @@
 package com.nk.dao;
 
 import com.nk.beans.Auditorium;
-import com.nk.config.DBConfig;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 
 import java.util.List;
 

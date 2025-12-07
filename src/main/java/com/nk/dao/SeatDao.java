@@ -2,15 +2,22 @@ package com.nk.dao;
 
 import com.nk.beans.Seat;
 import com.nk.enums.SeatStatus;
+import com.nk.exception.InvalidShowException;
 import org.hibernate.Session;
 
 import java.util.List;
 
 public interface SeatDao {
-    void addSeat(Session session, Long seatId);
-    Seat getSeat(Session session,Long seatId);
-    void updateSeat(Session session,Long seatId);
-    void deleteSeat(Session session,Long seatId);
+    List<Seat> getSeatsByAuditId(Session session, Long aid);
+
+    List<Seat> getSeatsByShowId(Session session, Long showId) throws InvalidShowException;
+
+    Seat getSingleSeatByShowIdAndSeatNo(Session session, Long showId, String seatNo) throws InvalidShowException;
+
+    Seat getSingleSeatByShowId(Session session,Long showId) throws InvalidShowException;
+
     List<Seat> getSeatsByStatus(Session session,SeatStatus status, Long aid);
-    List<Seat> getSeatsByAid(Session session,Long aid);
+
+    void displayAvailableSeatsByShowId(Session session,Long showId) throws InvalidShowException;
+
 }

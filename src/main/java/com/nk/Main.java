@@ -15,28 +15,35 @@ public class Main {
     private static final CustomerService customerService = FactoryClass.getCustomerService();
 
 
-    public static void main(String[] args) throws InvalidShowException {
+    public static void main(String[] args) throws Exception {
         final Scanner sc = new Scanner(System.in);
 
         System.out.println("===============WELCOME TO TICKETPLUS===============");
         while (true) {
             System.out.println("1. Admin\n" + "2. Customer\n" + "Any Key to exit");
+            System.out.println();
             System.out.print("Enter your choice :");
             int choice = sc.nextInt();
+            System.out.println();
             switch (choice) {
                 case 1:
+                    System.out.println("Admin Actions");
+                    System.out.println("--------------");
                     System.out.println("1. Add Movie\n" + "2. Create Show\n" + "3. Add Auditorium\n" + "Any Key to exit");
                     System.out.print("Enter your choice :");
                     int adminChoice = sc.nextInt();
                     switch (adminChoice) {
                         case 1:
                             adminService.createMovie();
+                            System.out.println();
                             break;
                         case 2:
                             adminService.createShow();
+                            System.out.println();
                             break;
                         case 3:
                             adminService.createAuditorium();
+                            System.out.println();
                             break;
                         default:
                             System.exit(0);
@@ -71,9 +78,9 @@ public class Main {
                     }
                     break;
                 default:
+                    System.out.println("===============Thanks Visit Again===============");
                     System.exit(0);
             }
-            System.out.println("===============Thanks Visit Again===============");
         }
     }
 }

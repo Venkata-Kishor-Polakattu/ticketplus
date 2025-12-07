@@ -26,11 +26,23 @@ public class Show extends BaseEntity {
     @OneToMany(mappedBy = "show",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Booking> booking;
 
+    @OneToMany(mappedBy = "show",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Seat> seats;
+
     @Column(name = "showTime")
     private LocalDateTime showTime;
 
+
     public List<Booking> getBooking() {
         return booking;
+    }
+
+    public List<Seat> getSeats() {
+        return seats;
+    }
+
+    public void setSeats(List<Seat> seats) {
+        this.seats = seats;
     }
 
     public void setBooking(List<Booking> booking) {
@@ -95,11 +107,12 @@ public class Show extends BaseEntity {
     public String toString() {
         return "Show{" +
                 ", id=" + id +
-                ", movie=" + movie.getTitle() +
-                ", auditorium=" + auditorium.getName() +
                 ", showTime='" + showTime.getHour()+":"+showTime.getMinute() + '\'' +
                 ", endTime='" + endTime.getHour()+":"+endTime.getMinute() + '\'' +
                 ", status=" + status +
+                ", movie=" + movie.getTitle() +
+                ", auditorium=" + auditorium.getName() +
+                ", seats=" + seats.size() +
                 '}';
     }
 }

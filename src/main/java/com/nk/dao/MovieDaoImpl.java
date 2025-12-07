@@ -1,10 +1,8 @@
 package com.nk.dao;
 
 import com.nk.beans.Movie;
-import com.nk.config.DBConfig;
 import com.nk.enums.MovieStatus;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import java.util.List;
@@ -15,7 +13,6 @@ public class MovieDaoImpl implements MovieDao {
     public void addMovie(Session session,Movie movie) {
         System.out.println("Adding movie");
         session.persist(movie);
-        session.close();
     }
 
 
@@ -23,13 +20,13 @@ public class MovieDaoImpl implements MovieDao {
     public Movie getMovieById(Session session,Long movieId) {
         System.out.println("Searching movie");
 
-        //Movie foundMovie=session.find(Movie.class, movieId); --> without HQL
+        Movie foundMovie=session.find(Movie.class, movieId);// --> without HQL
 
-        String HQL="from Movie m where m.id=:id"; // -->with HQL
+        /*String HQL="from Movie m where m.id=:id"; // -->with HQL
         Query<Movie> nativeQuery=session.createQuery(HQL,Movie.class);
         nativeQuery.setParameter("id",movieId);
+        Movie foundMovie=nativeQuery.getSingleResult();*/
 
-        Movie foundMovie=nativeQuery.getSingleResult();
         return foundMovie;
     }
 
@@ -39,9 +36,7 @@ public class MovieDaoImpl implements MovieDao {
         Query<Movie> nativeQuery=session.createQuery(HQL,Movie.class);
         nativeQuery.setParameter("status",movieStatus);
 
-        Transaction tx=session.beginTransaction();
         List<Movie> movies=nativeQuery.getResultList();
-
         return movies;
     }
 
