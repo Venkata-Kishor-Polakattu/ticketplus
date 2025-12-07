@@ -1,6 +1,5 @@
 package com.nk;
 
-import com.nk.exception.InvalidShowException;
 import com.nk.factory.FactoryClass;
 import com.nk.users.AdminService;
 import com.nk.users.CustomerService;

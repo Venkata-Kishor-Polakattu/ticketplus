@@ -1,8 +1,6 @@
 package com.nk.dao;
 
 import com.nk.beans.Booking;
-import com.nk.beans.Seat;
-import com.nk.exception.InvalidShowException;
 import org.hibernate.Session;
 
 import java.util.List;

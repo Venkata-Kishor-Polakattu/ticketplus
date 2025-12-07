@@ -6,6 +6,9 @@ import com.nk.users.AdminService;
 import com.nk.users.AdminServiceImpl;
 import com.nk.users.CustomerService;
 import com.nk.users.CustomerServicesImpl;
+import com.nk.validators.AuditoriumValidator;
+import com.nk.validators.MovieValidator;
+import com.nk.validators.UserValidator;
 
 import java.util.Scanner;
 
@@ -45,7 +48,7 @@ public class FactoryClass {
 
 
     private static ShowService showService;
-    public static ShowService getShowServiceFactory(){
+    public static ShowService getShowService(){
         if (showService==null){
             showService=new ShowServiceImpl();
         }
@@ -101,4 +104,27 @@ public class FactoryClass {
         return showDao;
     }
 
+    private static MovieValidator movieValidator;
+    public static MovieValidator getMovieValidator() {
+        if (movieValidator == null) {
+            movieValidator = new MovieValidator();
+        }
+        return movieValidator;
+    }
+
+    private static UserValidator userValidator;
+    public static UserValidator getUserValidator() {
+        if (userValidator == null) {
+            userValidator = new UserValidator();
+        }
+        return userValidator;
+    }
+
+    private static AuditoriumValidator auditoriumValidator;
+    public static AuditoriumValidator getAuditoriumValidator() {
+        if (auditoriumValidator == null) {
+            auditoriumValidator = new AuditoriumValidator();
+        }
+        return auditoriumValidator;
+    }
 }

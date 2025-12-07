@@ -8,12 +8,14 @@ import com.nk.dto.MovieDto;
 import com.nk.dto.ShowDto;
 import com.nk.enums.Certification;
 import com.nk.enums.MovieStatus;
+import com.nk.exception.InsufficientRowsException;
 import com.nk.exception.InvalidAuditoriumException;
-import com.nk.exception.InvalidMovieException;
 import com.nk.factory.FactoryClass;
 import com.nk.service.MovieService;
 import com.nk.service.ShowService;
-import com.nk.service.ShowServiceImpl;
+import com.nk.validators.AuditoriumValidator;
+import com.nk.validators.MovieValidator;
+import com.nk.validators.UserValidator;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -21,6 +23,9 @@ import java.time.LocalDate;
 import java.util.*;
 
 public class AdminServiceImpl implements AdminService {
+    final MovieValidator movieValidator = FactoryClass.getMovieValidator();
+    final UserValidator userValidator = FactoryClass.getUserValidator();
+    final AuditoriumValidator auditoriumValidator=FactoryClass.getAuditoriumValidator();
 
     static final Scanner scanner = FactoryClass.getScanner();
     private static final MovieService movieService =FactoryClass.getMovieService();
@@ -38,32 +43,36 @@ public class AdminServiceImpl implements AdminService {
             String title = scanner.next();
             movieDto.setTitle(title);
 
-            System.out.print("Enter language :");
+            System.out.print("Enter language :");//language should not contain numbers
             String language = scanner.next();
+            movieValidator.validateLanguage(language);
             movieDto.setLanguage(language);
 
-            System.out.print("Enter duration(minutes)  :");
+            System.out.print("Enter duration(minutes)  :"); //duration should not be less than hour
             Integer duration = scanner.nextInt();
             scanner.nextLine();
+            movieValidator.validateDuration(duration);
             movieDto.setDuration(duration);
 
-            System.out.print("Enter certification :");
-            Certification certification = Certification.valueOf(scanner.next());
+            System.out.print("Enter certification [U_A or A] :"); // certification must be either A or U_A
+            Certification certification = Certification.valueOf(scanner.next().trim());
+            movieValidator.validateCertification(certification);
             movieDto.setCertification(certification);
 
             movieDto.setStatus(MovieStatus.AVAILABLE);
 
-            System.out.print("Enter Your name :");
+            System.out.print("Enter Your name :"); //name should not contain numbers
             String name=scanner.next();
+            userValidator.validateUserName(name);
             movieDto.setCreatedBy(name);
 
-            System.out.println("Check movie Details");
-            System.out.println(movieDto);
 
             movieService.addMovie(session,movieDto);
             tx.commit();
             System.out.println("✅ Movie Added Successfully");
             session.close();
+            System.out.println("Movie Details");
+            System.out.println(movieDto);
         }catch (Exception e){
             if (tx != null && tx.getStatus().canRollback()) {
                 tx.rollback();
@@ -99,7 +108,7 @@ public class AdminServiceImpl implements AdminService {
             Long aid = scanner.nextLong();
             scanner.nextLine();
             if (!audit_set.contains(aid)) {
-                throw new InvalidAuditoriumException("Invalid Auditorium Id and enter the available one");
+                System.out.println("❌Invalid Auditorium Id, enter the available one");
             }
 
             List<Movie> movies = movieService.getAvailableMovies(session);//displaying all movies
@@ -114,13 +123,14 @@ public class AdminServiceImpl implements AdminService {
             Long mid = scanner.nextLong();
             scanner.nextLine();
             if (!movie_set.contains(mid)) {
-                throw new InvalidMovieException("Invalid Movie Id and enter the available one");
+                System.out.println("❌Invalid Movie Id, enter the available one");
             }
 
             System.out.print("Enter your name :");
-            String name = scanner.next();
+            String name = scanner.nextLine();
+            userValidator.validateUserName(name);
 
-            ShowService showService = new ShowServiceImpl();
+            ShowService showService = FactoryClass.getShowService();
             ShowDto showDto = new ShowDto();
             showDto.setAid(aid);showDto.setMid(mid);showDto.setCreatedBy(name);
             showService.addShow(session,showDto);// call addShowO(audiID,movieId,showsDto);
@@ -151,20 +161,28 @@ public class AdminServiceImpl implements AdminService {
 
             System.out.print("Enter Auditorium Name you want :");
             String name = scanner.next();
-            auditorium.setName(name); //auditorium.setName("Ranga");
+            auditorium.setName(name);
 
             System.out.print("Enter Seat Columns :");
             Integer seatCols = scanner.nextInt();
+            auditoriumValidator.validateColumns(seatCols);
             scanner.nextLine();
+
+
             auditorium.setSeatCols(seatCols);//auditorium.setSeatCols(20);
 
             System.out.print("Enter Seat Rows :");
             Integer seatRows = scanner.nextInt();
+            auditoriumValidator.validateSeatRows(seatRows);
             scanner.nextLine();
+
+
             auditorium.setSeatRows(seatRows);//auditorium.setSeatRows(25);
 
             System.out.print("Enter your name :");
-            auditorium.setCreatedBy(scanner.next());
+            String admin_name= scanner.nextLine();
+            userValidator.validateUserName(admin_name);
+            auditorium.setCreatedBy(admin_name);
 
             auditorium.setCreatedAt(LocalDate.now());
             auditorium.setUpdatedAt(LocalDate.now());

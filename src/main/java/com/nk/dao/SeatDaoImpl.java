@@ -4,7 +4,7 @@ import com.nk.beans.Auditorium;
 import com.nk.beans.Seat;
 import com.nk.beans.Show;
 import com.nk.enums.SeatStatus;
-import com.nk.exception.InvalidShowException;
+import com.nk.exception.ShowNotFoundException;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
@@ -31,10 +31,10 @@ public class SeatDaoImpl implements  SeatDao {
     }
 
     @Override
-    public List<Seat> getSeatsByShowId(Session session, Long showId) throws InvalidShowException {
+    public List<Seat> getSeatsByShowId(Session session, Long showId) throws ShowNotFoundException {
         Show show=session.find(Show.class,showId);
         if (show == null) {
-            throw new InvalidShowException("Invalid Show Id, check once again");
+            throw new ShowNotFoundException("Invalid Show Id, check once again");
         }
 
         Auditorium auditorium =show.getAuditorium();
@@ -56,7 +56,7 @@ public class SeatDaoImpl implements  SeatDao {
 
 
     @Override
-    public void displayAvailableSeatsByShowId(Session session,Long showId) throws InvalidShowException {
+    public void displayAvailableSeatsByShowId(Session session,Long showId) throws ShowNotFoundException {
         List<Seat> seats=getSeatsByShowId(session,showId).stream().filter(seat->seat.getStatus().equals(SeatStatus.AVAILABLE)).toList();
         System.out.println("Available Seats:");
         for (Seat seat:seats) {

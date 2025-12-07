@@ -9,8 +9,7 @@ import com.nk.enums.BookingStatus;
 import com.nk.enums.PaymentStatus;
 import com.nk.enums.SeatStatus;
 import com.nk.enums.ShowStatus;
-import com.nk.exception.InvalidBookingException;
-import com.nk.exception.InvalidShowException;
+import com.nk.exception.ShowNotFoundException;
 import com.nk.factory.*;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -26,7 +25,7 @@ public class CustomerServicesImpl implements CustomerService {
     private final BookingDao bookingDao = FactoryClass.getBookingDao();
 
     @Override
-    public void viewSeats() throws InvalidShowException{
+    public void viewSeats() throws ShowNotFoundException {
         System.out.println("Displaying the seats");
         Session session = DBConfig.getSession();
         Transaction tx = session.beginTransaction();
