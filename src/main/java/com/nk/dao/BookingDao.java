@@ -12,6 +12,8 @@ public interface BookingDao {
 
     boolean isSeatBooked(Session session,Long showId,Long seatId);
 
+    Booking getBookingById(Session session,Long bookingId);
+
     List<Booking> getBookingsByShow(Session session,Long showId);
 
 }

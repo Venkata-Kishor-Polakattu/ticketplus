@@ -11,7 +11,18 @@ public class CustomerServiceTest {
     public static void main(String[] args) {
         //testViewSeats();
         //testGetShowById(1l);
-        testBookSeats();
+        //testBookSeats();
+        //testConfirmPayment();
+    }
+
+    public static void testConfirmPayment(){
+        try {
+            customerService.confirmPayment();
+            System.out.println("✅ Customer View Seats passed the TEST");
+        } catch (Exception e) {
+            System.out.println("❌ Customer View Seats failed the TEST");
+            e.printStackTrace();
+        }
     }
 
     public static void testViewSeats(){

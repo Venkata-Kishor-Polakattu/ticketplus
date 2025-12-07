@@ -1,11 +1,9 @@
 package com.nk.dao;
 
 import com.nk.beans.Booking;
-import com.nk.beans.Seat;
 import com.nk.beans.Show;
 import com.nk.enums.BookingStatus;
 import com.nk.enums.PaymentStatus;
-import com.nk.exception.InvalidShowException;
 import com.nk.factory.FactoryClass;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
@@ -13,8 +11,6 @@ import org.hibernate.query.Query;
 import java.util.List;
 
 public class BookingDaoImpl implements BookingDao {
-    private static ShowDao showDao = FactoryClass.getShowDao();
-    private static SeatDao seatDao = FactoryClass.getSeatDao();
 
     @Override
     public Booking generateBooking(Session session,Long showId, String seatNos) throws Exception {
@@ -34,6 +30,12 @@ public class BookingDaoImpl implements BookingDao {
     }
 
     @Override
+    public Booking getBookingById(Session session,Long bookingId) {
+       Booking booking= session.find(Booking.class,bookingId);
+        return booking;
+    }
+
+    @Override
     public List<Booking> getBookingsByShow(Session session,Long showId) {
 
         String hql="from Booking b where b.show.id=:showId";
@@ -41,5 +43,4 @@ public class BookingDaoImpl implements BookingDao {
         List<Booking> bookingList=query.getResultList();
         return bookingList;
     }
-
 }

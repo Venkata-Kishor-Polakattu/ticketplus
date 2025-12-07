@@ -5,8 +5,11 @@ import com.nk.beans.Seat;
 import com.nk.beans.Show;
 import com.nk.config.DBConfig;
 import com.nk.dao.*;
+import com.nk.enums.BookingStatus;
+import com.nk.enums.PaymentStatus;
 import com.nk.enums.SeatStatus;
 import com.nk.enums.ShowStatus;
+import com.nk.exception.InvalidBookingException;
 import com.nk.exception.InvalidShowException;
 import com.nk.factory.*;
 import org.hibernate.Session;
@@ -43,7 +46,7 @@ public class CustomerServicesImpl implements CustomerService {
                 String movieName = show.getMovie().getTitle();
                 String auditName = show.getAuditorium().getName();
 
-                System.out.println(show.getId() + "    " + auditName + "    " + movieName);
+                System.out.println(show.getId() + " | " + auditName + " | " + movieName);
             }
 
             System.out.print("Choose the Show id :");// here customer enter integer value so we have to do type casting
@@ -95,12 +98,13 @@ public class CustomerServicesImpl implements CustomerService {
 
             //take showId input
             System.out.print("Enter the Show id :");
-            Integer showId=scanner.nextInt();
+            Integer id=scanner.nextInt();
             scanner.nextLine();
+            Long showId = id.longValue();
 
             //display the available seats
             System.out.println("Available Seats");
-            List<Seat> availableSeats=seatDao.getSeatsByShowId(session, showId.longValue());
+            List<Seat> availableSeats=seatDao.getSeatsByShowId(session, showId);
 
             if (availableSeats.isEmpty()) {
                 System.out.println("❌ No seats available");
@@ -133,7 +137,7 @@ public class CustomerServicesImpl implements CustomerService {
             for (String seatNo : seatInputs) {
 
                 // Fetch the specific seat
-                Seat seat = seatDao.getSingleSeatByShowIdAndSeatNo(session, showId.longValue(),seatNo);
+                Seat seat = seatDao.getSingleSeatByShowIdAndSeatNo(session, showId,seatNo);
 
                 if (seat == null) {
                     System.out.println("❌ Invalid seat number: " + seatNo);
@@ -155,7 +159,7 @@ public class CustomerServicesImpl implements CustomerService {
 
             String bookedSeats = String.join(",", successfullyBookedSeats);
 
-            Booking booking=bookingDao.generateBooking(session,showId.longValue(),bookedSeats);
+            Booking booking=bookingDao.generateBooking(session,showId,bookedSeats);
             tx.commit();
             System.out.println("✅Tickets Booked Successfully");
             System.out.println("Your booking details :"+booking);
@@ -174,7 +178,68 @@ public class CustomerServicesImpl implements CustomerService {
 
     @Override
     public void confirmPayment() {
+        Session session = DBConfig.getSession();
+        Transaction tx = session.beginTransaction();
+        try {
+            System.out.print("Enter Booking Id :");
+            Integer id=scanner.nextInt();
+            scanner.nextLine();
+            Long bookingId=id.longValue();
 
+            //get the booking details
+            Booking booking=bookingDao.getBookingById(session,bookingId);
+
+
+            //checks whether the booking id valid or not
+            if (booking == null) {
+                System.out.println("❌ Invalid Booking Id, please try again.");
+                return;
+            }
+
+
+            //checks whether the seats are booked or not
+            if (!booking.getBookingStatus().equals(BookingStatus.BOOKED)) {
+                System.out.println("Tickets are not booked yet, please book them first");
+                return;
+            }
+
+            if (booking.getPaymentStatus().equals(PaymentStatus.SUCCESS)){
+                System.out.println("✅ Payment was done already");
+                return;
+            }
+
+            String[] allSeats=booking.getBookedSeats().split(",");
+            int total_price=allSeats.length*150;
+            System.out.println("cost per seat : 150 Rs");
+            System.out.println("Total amount to be paid :"+total_price+" Rs");
+
+            System.out.println("Enter the amount to be paid :");
+            int entered_amount=scanner.nextInt();
+            scanner.nextLine();
+
+            while (entered_amount!=total_price){
+                System.out.println("Enter exact amount to be paid :");
+                entered_amount=scanner.nextInt();
+                scanner.nextLine();
+            }
+
+            booking.setPaymentStatus(PaymentStatus.SUCCESS);
+            booking.setTotal_price(entered_amount);
+            session.merge(booking);
+            tx.commit();
+            System.out.println("✅ Payment successful");
+
+        }catch (Exception e) {
+            if (tx != null && tx.getStatus().canRollback()) {
+                tx.rollback();
+            }
+            System.out.println("❌Payment Failed");
+            e.printStackTrace();
+        }finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
     }
 
     @Override

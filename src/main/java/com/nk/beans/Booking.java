@@ -15,7 +15,6 @@ public class Booking {
     @JoinColumn(name = "show_id")
     private Show show;
 
-
     @Enumerated(EnumType.STRING)
     private BookingStatus  bookingStatus;
 
@@ -24,6 +23,17 @@ public class Booking {
 
     @Column(name = "booked_seats", length = 100)
     private String bookedSeats;
+
+    @Column(name = "total_price")
+    Integer total_price;
+
+    public Integer getTotal_price() {
+        return total_price;
+    }
+
+    public void setTotal_price(Integer total_price) {
+        this.total_price = total_price;
+    }
 
     public String getBookedSeats() {
         return bookedSeats;
