@@ -9,6 +9,19 @@ public class SeatDaoTest {
    private static SeatDao seatDao= FactoryClass.getSeatDao();
     public static void main(String[] args) {
         //testGetSeatByShowId(1l);
+        //testGetSeatsByShowId(1l);
+    }
+    public static void testGetSeatsByShowId(Long showId){
+        Session session= DBConfig.getSession();
+        Transaction tx= session.beginTransaction();
+        try {
+            System.out.println(seatDao.getSeatsByShowId(session,showId));
+            tx.commit();
+            System.out.println("✅ GetSeatByShowId passed the TEST");
+        }catch (Exception e){
+            System.err.println("❌ GetSeatByShowId failed the TEST");
+            e.printStackTrace();
+        }
     }
 
     public static void testGetSeatByShowId(Long showId){

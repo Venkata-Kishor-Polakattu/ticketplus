@@ -4,15 +4,12 @@ import com.nk.beans.Seat;
 import com.nk.beans.Show;
 import com.nk.enums.SeatStatus;
 import com.nk.enums.ShowStatus;
-import com.nk.factory.FactoryClass;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
 import java.util.List;
 
 public class ShowDaoImpl implements ShowDao {
-
-    SeatDao seatDao = FactoryClass.getSeatDao();
 
     @Override
     public void addShow(Session session,Show show) {

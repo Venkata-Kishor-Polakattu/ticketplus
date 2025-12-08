@@ -15,7 +15,7 @@ public class SeatDaoImpl implements  SeatDao {
 
     @Override
     public List<Seat> getSeatsByAuditId(Session session, Long aid) {
-        Query<Seat> nativeQuery=session.createQuery("from Seat s where s.auditorium.id=:id",Seat.class);
+        Query<Seat> nativeQuery=session.createQuery("from Seat s where s.auditorium.id=:id and s.show.id is null",Seat.class);
         nativeQuery.setParameter("id",aid);
         List<Seat> seats=nativeQuery.getResultList();
         return seats;
@@ -27,10 +27,11 @@ public class SeatDaoImpl implements  SeatDao {
         if (show == null) {
             throw new ShowNotFoundException("Invalid Show Id, check once again");
         }
+        Query<Seat> nativeQuery=session.createQuery("from Seat s where s.show.id=:show_id and s.auditorium.id=:audi_id",Seat.class);
+        nativeQuery.setParameter("show_id",show.getId());
+        nativeQuery.setParameter("audi_id",show.getAuditorium().getAid());
 
-        Auditorium auditorium =show.getAuditorium();
-
-        List<Seat> seats= getSeatsByAuditId(session,auditorium.getAid());
+        List<Seat> seats= nativeQuery.getResultList();
         return seats;
     }
 
@@ -47,4 +48,5 @@ public class SeatDaoImpl implements  SeatDao {
         }
         return allSeats.get(0);
     }
+
 }
