@@ -83,7 +83,6 @@ Each movie can have multiple shows, and each show belongs to exactly one movie.
 
 ## 🗂️ Project Structure
 
-```text
 src/main/java
 └── com.nk
     ├── beans
@@ -105,3 +104,60 @@ src/main/java
 src/main/resources
 └── META-INF
     └── persistence.xml
+
+
+▶️ How to Run / Execute the Project
+
+This project focuses on backend persistence and ORM concepts using JPA (Hibernate).
+It does not include a UI or REST API layer.
+
+Prerequisites
+Java 8+
+Maven
+MySQL
+JPA (Hibernate)
+
+
+Steps to Execute
+----------------
+
+1️⃣ Clone the Repository
+
+git clone https://github.com/your-username/cinema-ticket-booking-system.git
+cd cinema-ticket-booking-system
+
+
+2️⃣ Create the Database
+CREATE DATABASE cinema_db;
+
+
+3️⃣ Configure Database Connection
+Update the database details in:
+
+src/main/resources/META-INF/persistence.xml
+
+<property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/cinema_db"/>
+<property name="jakarta.persistence.jdbc.user" value="root"/>
+<property name="jakarta.persistence.jdbc.password" value="password"/>
+
+
+4️⃣ Build the Project
+mvn clean install
+
+
+5️⃣ Run Persistence Operations
+The project is executed by invoking DAO / Service layer methods to perform:
+Movie creation
+Show scheduling
+Ticket booking
+Database persistence and retrieval
+Execution can be done via:
+A main test class, or
+JUnit test cases, or
+Manual method invocation for learning and testing purposes
+
+
+
+**Note**:
+This project is designed to demonstrate JPA/Hibernate backend concepts.
+UI and REST API layers can be added in future versions.
