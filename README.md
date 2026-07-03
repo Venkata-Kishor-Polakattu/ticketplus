@@ -123,7 +123,7 @@ Steps to Execute
 
 1️⃣ Clone the Repository
 
-git clone https://github.com/your-username/cinema-ticket-booking-system.git
+git clone https://github.com/Venkata-Kishor-Polakattu/ticketplus.git
 cd cinema-ticket-booking-system
 
 
